@@ -51,7 +51,46 @@ board = [[0, 0, 0, 0],
          [0, 0, 0, 0],
          [0, 0, 0, 0]]
 
-// GIT UPDATE
+def spawnTile():
+    x = random.randrange(0, 4)
+    y = random.randrange(0, 4)
+    if board[x][y] == 0:
+        board[x][y] = 4 if random.random() > 0.9 else 2
+
+
+# Create initial tiles at start of game
+for i in range(2):
+    spawnTile()
+
+def displayTiles():
+    for i in range(4):
+        for j in range(4):
+            print (board[i][j], end = " ")
+        print()
+
+def moveTiles(direction):
+    """
+    Direction Parameter: string
+    "left", "right", "up", "down"
+    
+    This function handles the movement of tiles when keys are pressed
+    """
+    if direction == "left":
+        # Move through rows, then colums
+        for j in range(1,4):
+            for i in range(0,4):
+
+    if direction == "right":
+        pass
+    if direction == "up":
+        pass
+    if direction == "down":
+        pass
+
+    # call spawnTile()
+
+
+displayTiles()
 
 while True:
     clock.tick(FPS)
@@ -59,7 +98,18 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                print ("LEFT")
+            if event.key == pygame.K_RIGHT:
+                print ("RIGHT")
+            if event.key == pygame.K_UP:
+                print ("UP")
+            if event.key == pygame.K_DOWN:
+                print ("DOWN")
 
     draw_board_bg()
+
+
 
     pygame.display.update()
