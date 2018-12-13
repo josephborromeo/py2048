@@ -68,6 +68,7 @@ def displayTiles():
             print (board[i][j], end = " ")
         print()
 
+
 def moveTiles(direction):
     """
     Direction Parameter: string
@@ -77,9 +78,16 @@ def moveTiles(direction):
     """
     if direction == "left":
         # Move through rows, then colums
+        move = False
         for j in range(1,4):
             for i in range(0,4):
-
+                if board[i][j] != 0:
+                    if board[i][j-1] == 0:
+                        move = True
+                        for moves in range(j,0, -1):
+                            if board[i][moves - 1] == 0:
+                                board[i][moves - 1] = board[i][moves]
+                                board[i][moves] = 0
     if direction == "right":
         pass
     if direction == "up":
@@ -87,7 +95,9 @@ def moveTiles(direction):
     if direction == "down":
         pass
 
-    # call spawnTile()
+
+    if move:
+        spawnTile()
 
 
 displayTiles()
@@ -101,6 +111,8 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 print ("LEFT")
+                moveTiles("left")
+                displayTiles()
             if event.key == pygame.K_RIGHT:
                 print ("RIGHT")
             if event.key == pygame.K_UP:
