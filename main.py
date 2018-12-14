@@ -88,6 +88,13 @@ def moveTiles(direction):
                             if board[i][moves - 1] == 0:
                                 board[i][moves - 1] = board[i][moves]
                                 board[i][moves] = 0
+
+                            ## add logic
+                            elif board[i][moves - 1] == board[i][moves]:
+                                board[i][moves - 1] = board[i][moves]
+                                board[i][moves] = 0
+
+                            #once the nums have been added, shift it all
     if direction == "right":
         pass
     if direction == "up":
