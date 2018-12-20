@@ -54,8 +54,11 @@ board = [[0, 0, 0, 0],
 def spawnTile():
     x = random.randrange(0, 4)
     y = random.randrange(0, 4)
-    if board[x][y] == 0:
-        board[x][y] = 4 if random.random() > 0.9 else 2
+    while board[x][y] != 0:
+        # if this loops more than 16 times then endgame has been reached!               ***********:)
+        x = random.randrange(0, 4)
+        y = random.randrange(0, 4)
+    board[x][y] = 4 if random.random() > 0.9 else 2
 
 
 # Create initial tiles at start of game
@@ -77,33 +80,60 @@ def moveTiles(direction):
     This function handles the movement of tiles when keys are pressed
     """
     if direction == "left":
-        # Move through rows, then colums
-        move = False
-        for j in range(1,4):
-            for i in range(0,4):
+        # move to leftmost spaces, then combine
+        moved = False
+        for i in range(0,4):
+
+            for move1 in range(1,4):
+                for move2 in range(1, 4):
+                    if board[i][move2-1] == 0 and board[i][move2] != 0:
+                        board[i][move2-1] = board[i][move2]
+                        board[i][move2] = 0
+                        moved = True
+
+            for j in range(1,4):
                 if board[i][j] != 0:
-                    if board[i][j-1] == 0:
-                        move = True
-                        for moves in range(j,0, -1):
-                            if board[i][moves - 1] == 0:
-                                board[i][moves - 1] = board[i][moves]
-                                board[i][moves] = 0
+                    if board[i][j] == board[i][j-1]:
+                        board[i][j-1] = board[i][j-1]*2
+                        board[i][j] = 0
+                        moved = True
+            for move1 in range(1,4):
+                for move2 in range(1, 4):
+                    if board[i][move2-1] == 0 and board[i][move2] != 0:
+                        board[i][move2-1] = board[i][move2]
+                        board[i][move2] = 0
+                        moved = True
 
-                            ## add logic
-                            elif board[i][moves - 1] == board[i][moves]:
-                                board[i][moves - 1] = board[i][moves]
-                                board[i][moves] = 0
-
-                            #once the nums have been added, shift it all
     if direction == "right":
-        pass
+        moved = False
+        for i in range(0, 4):
+
+            for move1 in range(0, 3):
+                for move2 in range(0, 3):
+                    if board[i][move2 + 1] == 0 and board[i][move2] != 0:
+                        board[i][move2 + 1] = board[i][move2]
+                        board[i][move2] = 0
+                        moved = True
+
+            for j in range(0, 3):
+                if board[i][j] != 0:
+                    if board[i][j] == board[i][j + 1]:
+                        board[i][j + 1] = board[i][j + 1] * 2
+                        board[i][j] = 0
+                        moved = True
+            for move1 in range(0, 3):
+                for move2 in range(0, 3):
+                    if board[i][move2 + 1] == 0 and board[i][move2] != 0:
+                        board[i][move2 + 1] = board[i][move2]
+                        board[i][move2] = 0
+                        moved = True
     if direction == "up":
         pass
     if direction == "down":
         pass
 
 
-    if move:
+    if moved:
         spawnTile()
 
 
@@ -122,10 +152,15 @@ while True:
                 displayTiles()
             if event.key == pygame.K_RIGHT:
                 print ("RIGHT")
+                moveTiles("right")
+                displayTiles()
             if event.key == pygame.K_UP:
                 print ("UP")
             if event.key == pygame.K_DOWN:
                 print ("DOWN")
+            if event.key == pygame.K_RETURN:
+                spawnTile()
+                displayTiles()
 
     draw_board_bg()
 
